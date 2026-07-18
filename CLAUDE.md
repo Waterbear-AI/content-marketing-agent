@@ -81,10 +81,10 @@ straight to normal operation.
   modal + working-state UI). Reads `calendar-data.js`. You normally never edit it (only to
   improve the UI).
 - **`server.js`** — zero-dependency local Node server. Serves the dashboard + `calendar-data.js`
-  on `127.0.0.1:4317` and exposes `GET`/`PUT /api/state` for the overlay below. `npm start` runs
+  on `127.0.0.1:24317` and exposes `GET`/`PUT /api/state` for the overlay below. `npm start` runs
   it in the background under `node --watch` (auto-restarts on `server.js` edits;
   `content-calendar.html`/`calendar-data.js` are read fresh per request, no restart needed) —
-  then open `http://127.0.0.1:4317/`. `npm stop` stops it, `npm run logs` tails `server.log`.
+  then open `http://127.0.0.1:24317/`. `npm stop` stops it, `npm run logs` tails `server.log`.
   `start.sh`/`stop.sh` hold the background/pid mechanics; `server.log`/`server.pid` are gitignored
   runtime state.
 - **`overlay-state.json`** — EPHEMERAL working-state overlay, written by the dashboard (never by

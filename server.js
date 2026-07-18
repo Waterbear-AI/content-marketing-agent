@@ -26,7 +26,7 @@
  * for those) — logs land in server.log, pid in server.pid. `npm stop` sends SIGTERM (flushes any
  * pending overlay commit via the shutdown handler below) and cleans up the pid file. `npm run
  * logs` tails server.log. Or run `node server.js` directly for a plain foreground instance.
- * Then open http://127.0.0.1:4317/
+ * Then open http://127.0.0.1:24317/
  */
 
 const http = require('node:http');
@@ -37,7 +37,7 @@ const { execFile } = require('node:child_process');
 // ---- configuration (secure defaults; opt-out is explicit) ----
 const ROOT = __dirname;                                  // static root = repo dir
 const HOST = '127.0.0.1';                                // fixed loopback; not operator-overridable
-const PORT = Number(process.env.PORT) || 4317;
+const PORT = Number(process.env.PORT) || 24317;
 const STATE_FILE = process.env.STATE_FILE
   ? path.resolve(process.env.STATE_FILE)
   : path.join(ROOT, 'overlay-state.json');

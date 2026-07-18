@@ -72,7 +72,7 @@ unpack it, and move the files into place (the zip expands into a
 content-marketing-agent-main/ folder, so flatten that until the files sit directly in
 the working folder), then delete the zip. Then run `npm start` to launch the local
 dashboard in the background, confirm it's actually up and running, and tell me to
-open http://127.0.0.1:4317/ in my browser.
+open http://127.0.0.1:24317/ in my browser.
 ```
 
 Your agent handles setup and gives you a link. Open it and there's your dashboard — empty and ready
