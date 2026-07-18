@@ -1,6 +1,6 @@
 # Content Marketing Agent
 
-Version <!-- version:start -->`v1.0.0`<!-- version:end --> · built and tested on macOS ([platform notes](#platform-support))
+Version <!-- version:start -->`v1.1.0`<!-- version:end --> · built and tested on macOS ([platform notes](#platform-support))
 
 A local, private content-marketing operator you run with your coding agent. You talk; it plans,
 drafts, schedules, and tracks your posts on a dashboard you own. No SaaS, no login, no data
