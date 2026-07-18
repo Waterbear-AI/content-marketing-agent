@@ -73,7 +73,7 @@ else {
   if (D.meta.outreachWeeklyTarget != null && typeof D.meta.outreachWeeklyTarget !== 'number')
     err('meta.outreachWeeklyTarget: must be a number');
   if (D.meta.template === true)
-    warn('meta.template is still true — this is unmodified sample data; run onboarding (see CLAUDE.md).');
+    warn('meta.template is still true — this is the un-onboarded template; run onboarding (see CLAUDE.md).');
 }
 
 // ---- phases -----------------------------------------------------------------

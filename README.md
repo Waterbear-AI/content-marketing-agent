@@ -73,9 +73,10 @@ dashboard in the background, confirm it's actually up and running, and tell me t
 open http://127.0.0.1:4317/ in my browser.
 ```
 
-Your agent handles setup and gives you a link. Open it and there's your dashboard, pre-loaded with a
-clearly-fake sample so you can see how everything fits. You're left with a plain folder and no git
-history, so nothing is tracked or pushed anywhere unless you decide to set that up.
+Your agent handles setup and gives you a link. Open it and there's your dashboard — empty and ready
+for your first session (the screenshots above show it populated, to give you the idea). You're left
+with a plain folder and no git history, so nothing is tracked or pushed anywhere unless you decide to
+set that up.
 
 ## What happens next
 
@@ -83,7 +84,7 @@ The first time you run it, your agent notices the workspace is still the templat
 quick questions: your name and brand, what you make, who you're talking to, what your content should
 actually *do* (leads, audience growth, authority), how you sound, and where and how often you post.
 Answer however you'd say it out loud; a sentence each is plenty. It fills in your brand voice, your
-offerings, and your roadmap, clears the sample data, and you're into the loop above.
+offerings, and your roadmap, and you're into the loop above.
 
 ## A note on privacy
 

@@ -37,10 +37,10 @@ the remote before writing real data and flag it:
 
 ## First-run onboarding (do this before anything else, once)
 
-Check `calendar-data.js`: if `meta.template` is still `true` (or `meta.owner` is still the
-sample "Sam Rivera"), this is a fresh instance that has never been onboarded. Before editing
-anything else, run a short intake interview. Answer-in-a-sentence is fine — you'll refine over
-time.
+Check `calendar-data.js`: if `meta.template` is still `true`, this is a fresh instance that has
+never been onboarded (the template ships empty — no phases, no posts, blank `meta`). Before
+editing anything else, run a short intake interview. Answer-in-a-sentence is fine — you'll
+refine over time.
 
 1. **Privacy check** (above) — only relevant if this workspace is already a git repo; with the
    default zip download there's nothing to flag.
@@ -61,8 +61,8 @@ time.
    whatever they name (LinkedIn, X, a newsletter, YouTube, etc.); the playbook is channel-agnostic.
 
 Then:
-- Replace the sample posts/phases in `calendar-data.js` with the user's real plan (or clear them
-  to a small starter set), set `meta` to real values, and **delete `meta.template`**.
+- Populate the empty `posts`/`phases` arrays in `calendar-data.js` with the user's real plan (a
+  small starter set is fine), set `meta` to real values, and **delete `meta.template`**.
 - Fill `brand-voice.md`, `offerings.md`, and `content-roadmap.md` from the interview (they ship
   as skeletons with `TODO` markers).
 - Seed `MEMORY.md` only with facts already durable now (e.g. the owner's name).
