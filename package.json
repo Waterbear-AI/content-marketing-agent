@@ -11,6 +11,7 @@
     "stop": "./stop.sh",
     "logs": "tail -n 50 -f server.log",
     "validate": "node tools/validate-data.js",
+    "migrate": "node tools/migrate.js",
     "package": "./tools/package.sh",
     "version:sync": "node tools/sync-version.js"
   }

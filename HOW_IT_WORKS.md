@@ -75,6 +75,9 @@ comma or a bad value before it silently breaks the dashboard.
 | `MEMORY.md` | Durable cross-topic facts your agent accumulates over time |
 | `journal.md` | Append-only session log |
 | `tools/validate-data.js` | Integrity check for `calendar-data.js`, run before committing |
+| `tools/migrate.js` | Upgrades your data to the current schema version (`npm run migrate`) |
+| `tools/migrations.js` | The ordered data-migration steps `migrate.js` runs |
+| `tools/schema.js` | The data schema version the current code expects (`SCHEMA_VERSION`) |
 | `tools/package.sh` | Builds a clean, git-free `content-marketing-agent.zip` (`npm run package`) |
 | `tools/sync-version.js` | Stamps `package.json`'s version into the README (`npm run version:sync`) |
 | `.claude/settings.json` | Claude Code SessionStart hook that injects today's date |
@@ -88,6 +91,23 @@ one you can't push to and wouldn't want holding your private drafts. The zip giv
 with no git history in it. GitHub builds that zip automatically for any public repo
 (`.../archive/refs/heads/main.zip`), so no build step is involved. If you'd rather cut one yourself
 from a specific commit, `tools/package.sh` does it via `npm run package`.
+
+## Updating & data migrations
+
+Your install is a plain folder with no git link back here, so updating is a deliberate act, not an
+auto-pull. The design keeps **code and your data separable** so a newer version can replace the code
+without touching what you've written. Two independent version numbers make that safe:
+
+- **App version** (`package.json`) bumps every release — it drives "should I pull newer code?"
+- **Data schema version** (`meta.schemaVersion` in `calendar-data.js`, checked against
+  `tools/schema.js`) bumps only when the *shape* of the data changes — it drives "should I migrate my
+  data?" Most releases don't touch it.
+
+`tools/migrate.js` reads your data's `schemaVersion` and applies any pending steps from
+`tools/migrations.js` to bring it up to what the code expects, **snapshotting your data into
+`.backups/` first**. It's a no-op when you're already current, and `validate-data.js` will tell you
+when a migration is due. (An agent-driven "update the tool" command that pulls a new version,
+preserves your data files, and runs this migration for you is the planned next step.)
 
 ## Privacy details
 

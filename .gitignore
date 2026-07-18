@@ -18,3 +18,6 @@ server.pid
 
 # Build artifact from `npm run package`
 content-marketing-agent.zip
+
+# Data snapshots written by tools/migrate.js before it upgrades your data
+.backups/

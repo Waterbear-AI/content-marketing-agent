@@ -15,6 +15,7 @@
  * =========================================================================== */
 
 const path = require('path');
+const { SCHEMA_VERSION } = require('./schema');
 
 const DATA_PATH = path.resolve(process.argv[2] || path.join(__dirname, '..', 'calendar-data.js'));
 
@@ -64,6 +65,11 @@ if (!D || typeof D !== 'object') { console.error('\n❌ window.MKT_DATA is missi
 // ---- meta -------------------------------------------------------------------
 if (!D.meta || typeof D.meta !== 'object') err('meta: missing');
 else {
+  const sv = D.meta.schemaVersion;
+  if (sv == null) warn(`meta.schemaVersion: missing — run 'node tools/migrate.js' to stamp it (assumed 1).`);
+  else if (typeof sv !== 'number' || !Number.isInteger(sv) || sv < 1) err('meta.schemaVersion: must be a positive integer');
+  else if (sv < SCHEMA_VERSION) warn(`meta.schemaVersion is ${sv} but this code expects ${SCHEMA_VERSION} — run 'node tools/migrate.js' to upgrade.`);
+  else if (sv > SCHEMA_VERSION) warn(`meta.schemaVersion is ${sv}, newer than this code (${SCHEMA_VERSION}) — update the app.`);
   if (!D.meta.owner) warn('meta.owner: missing (dashboard header will be blank)');
   checkDate(D.meta.updated, 'meta.updated');
   checkDate(D.meta.sprintStart, 'meta.sprintStart');

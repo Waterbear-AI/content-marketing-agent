@@ -22,6 +22,7 @@
  *
  * ---- SCHEMA -----------------------------------------------------------------
  * meta:
+ *   schemaVersion    number   data-format version; managed by tools/migrate.js — don't hand-edit
  *   owner            string   your name (shown in the dashboard header)
  *   brand            string   the brand/positioning line
  *   channel          string   primary channel (e.g. "LinkedIn", "X", "Newsletter")
@@ -63,6 +64,7 @@
 
 window.MKT_DATA = {
   meta: {
+    schemaVersion: 1,
     owner: "",
     brand: "",
     channel: "",

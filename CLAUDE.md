@@ -109,6 +109,11 @@ straight to normal operation.
   audience insights, working style, what's converting). Kept SEPARATE from this manual so the
   manual stays stable. Read + maintain it every session: @MEMORY.md
 - **`tools/validate-data.js`** — integrity check for `calendar-data.js`; run before every commit.
+- **`tools/migrate.js`** — upgrades the user's data to the current schema version. The data carries
+  a `meta.schemaVersion`; `tools/schema.js` holds the version the code expects and `tools/migrations.js`
+  the ordered upgrade steps. Run `node tools/migrate.js` (it backs up to `.backups/` first) when the
+  validator says the schema is behind — e.g. after pulling a newer version of the tool. No-op when
+  already current.
 
 ## Keep the dashboard current
 `calendar-data.js` is the file you maintain — whenever you plan, schedule, draft, or re-prioritize
@@ -183,6 +188,8 @@ The fastest way to make this system worthless is to publish something untrue or 
   `goal` values a key in its `GOAL` map. If you introduce a new pillar/goal, add it in both places.
 - Keep it valid JS — a stray comma breaks the dashboard silently. After editing, run
   `node tools/validate-data.js` and fix every error before committing.
+- `meta.schemaVersion` is the data-format version — **don't hand-edit it.** It's stamped and bumped
+  only by `tools/migrate.js`. Leave it as-is when you edit posts/phases/meta.
 
 ## Version control (usually none — and that's fine)
 By default this workspace is a plain zip download with **no `.git`**, so there's nothing to commit
