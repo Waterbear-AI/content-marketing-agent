@@ -1,0 +1,17 @@
+{
+  "name": "content-marketing-agent",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local, no-auth server that serves the content-marketing dashboard and persists its working-state overlay to overlay-state.json.",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "./start.sh",
+    "stop": "./stop.sh",
+    "logs": "tail -n 50 -f server.log",
+    "validate": "node tools/validate-data.js",
+    "package": "./tools/package.sh",
+    "version:sync": "node tools/sync-version.js"
+  }
+}

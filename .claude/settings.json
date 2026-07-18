@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "printf '{\"hookSpecificOutput\":{\"hookEventName\":\"SessionStart\",\"additionalContext\":\"Today is %s. Use this as the authoritative current date for all date stamps in calendar-data.js, content-log.md, and journal.md (the workspace has no other clock).\"}}\\n' \"$(date '+%A, %B %d, %Y (%Y-%m-%d)')\"",
+            "statusMessage": "Stamping today's date into context"
+          }
+        ]
+      }
+    ]
+  }
+}

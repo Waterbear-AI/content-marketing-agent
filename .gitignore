@@ -1,0 +1,20 @@
+# macOS
+.DS_Store
+._*
+
+# Editor / OS noise
+*.swp
+*~
+.idea/
+.vscode/
+
+# Local scratch (not tracked)
+scratch/
+*.local.md
+
+# server.js runtime state (background pid + logs — not the git-tracked overlay/data files)
+server.log
+server.pid
+
+# Build artifact from `npm run package`
+content-marketing-agent.zip

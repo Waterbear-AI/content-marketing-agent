@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Content Marketing · Calendar</title>
+<style>
+  :root {
+    --bg: #0e1116;
+    --panel: #161b22;
+    --panel-2: #1c232d;
+    --border: #2a323d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --accent: #4493f8;
+    --on_track: #3fb950;
+    --at_risk: #d29922;
+    --blocked: #f85149;
+    --review: #a371f7;
+    --p0: #f85149;
+    --p1: #d29922;
+    --p2: #4493f8;
+    --p3: #6e7681;
+    /* pillars */
+    --pi-educate:#3fb950; --pi-pov:#a371f7; --pi-story:#4493f8; --pi-product:#db61a2;
+    --pi-proof:#d29922; --pi-engage:#2dd4bf; --pi-personal:#f0883e; --pi-task:#6e7681;
+    --shadow: 0 1px 3px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.25);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+    font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 28px 24px 90px; }
+  a { color: var(--accent); }
+
+  header.top { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  header.top h1 { font-size: 22px; margin: 0; letter-spacing: -.3px; }
+  header.top .sub { color: var(--muted); font-size: 13px; margin-top: 3px; }
+
+  .stats { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0 8px; }
+  .stat { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px; min-width: 96px; }
+  .stat .n { font-size: 24px; font-weight: 650; letter-spacing: -.5px; }
+  .stat .l { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+  .stat.danger .n { color: var(--blocked); }
+  .stat.warn .n { color: var(--at_risk); }
+  .stat.good .n { color: var(--on_track); }
+  .stat.accent .n { color: var(--accent); }
+
+  h2.section { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin: 34px 0 12px; font-weight: 600; display:flex; align-items:center; gap:10px; }
+  h2.section .count { color: var(--muted); font-weight: 400; text-transform:none; letter-spacing:0; }
+
+  /* toolbar */
+  .toolbar { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom: 12px; }
+  .btn { background: var(--panel); border:1px solid var(--border); color: var(--text); border-radius: 8px; padding:6px 12px; font: inherit; font-size:13px; cursor:pointer; }
+  .btn:hover { border-color: var(--muted); }
+  .head-actions { display:flex; gap:8px; align-items:center; }
+  .sync { font-size:12px; color: var(--muted); display:inline-flex; align-items:center; gap:5px; white-space:nowrap; }
+  .sync:empty { display:none; }
+  .sync::before { content:"●"; font-size:9px; }
+  .sync.local::before { content:"○"; }
+  .sync.ok { color: var(--on_track); }
+  .sync.local { color: var(--at_risk); }
+  .wk-label { font-weight:600; font-size:14px; min-width: 210px; }
+  .wk-label span { color: var(--muted); font-weight:400; font-size:12px; }
+
+  /* week grid */
+  .week { display:grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+  .day { background: var(--panel); border:1px solid var(--border); border-radius: 12px; padding: 8px; min-height: 120px; display:flex; flex-direction:column; }
+  .day.today { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
+  .day.weekend { background: #12161c; }
+  .day .dh { display:flex; justify-content:space-between; align-items:baseline; margin-bottom: 6px; }
+  .day .dow { font-size: 11px; text-transform: uppercase; letter-spacing:.5px; color: var(--muted); font-weight:600; }
+  .day.today .dow { color: var(--accent); }
+  .day .dnum { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .day .none { color:#4a525d; font-size:12px; margin: auto auto; }
+  .mini { border-left: 3px solid var(--mc, var(--muted)); background: var(--panel-2); border-radius: 6px; padding: 6px 8px; margin-bottom: 6px; cursor:pointer; }
+  .mini:hover { outline:1px solid var(--border); }
+  .mini .mt { font-size: 12px; line-height:1.35; margin-bottom:4px; }
+  .mini.is-posted .mt { text-decoration: line-through; opacity:.6; }
+  .mini .mr { display:flex; align-items:center; gap:6px; }
+
+  /* status pill/select */
+  .spill { font-size: 10px; padding: 1px 7px; border-radius: 999px; border:1px solid var(--border); color: var(--muted); white-space:nowrap; }
+  .spill.st-drafting { color: var(--accent); border-color: var(--accent); }
+  .spill.st-ready    { color: var(--review); border-color: var(--review); }
+  .spill.st-posted   { color: var(--on_track); border-color: var(--on_track); }
+  .spill.st-idea     { color: var(--muted); }
+  .sel { font: inherit; font-size:12px; color: var(--muted); background: var(--panel); border:1px solid var(--border); border-radius:7px; padding:3px 6px; cursor:pointer; color-scheme: dark; }
+  .sel:hover { border-color: var(--muted); }
+  .sel.st-drafting { color: var(--accent); border-color: var(--accent); }
+  .sel.st-ready    { color: var(--review); border-color: var(--review); }
+  .sel.st-posted   { color: var(--on_track); border-color: var(--on_track); }
+
+  /* roadmap */
+  .roadmap { display:grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap:12px; }
+  .phase { background: var(--panel); border:1px solid var(--border); border-radius: 12px; padding: 14px 16px; position:relative; }
+  .phase.current { border-color: var(--accent); }
+  .phase .pnum { font-size:11px; letter-spacing:.5px; text-transform:uppercase; color: var(--muted); }
+  .phase .pname { font-size:15px; font-weight:650; margin: 2px 0; letter-spacing:-.2px; }
+  .phase .pwin { font-size:12px; color: var(--accent); margin-bottom:6px; }
+  .phase .pgoal { font-size:12.5px; color: var(--muted); line-height:1.5; }
+  .phase .cur-tag { position:absolute; top:12px; right:12px; font-size:10px; background: var(--accent); color:#04121f; font-weight:700; padding:2px 7px; border-radius:999px; }
+  .bar { height:6px; background: var(--panel-2); border-radius:999px; overflow:hidden; margin: 10px 0 4px; }
+  .bar > i { display:block; height:100%; background: var(--on_track); border-radius:999px; }
+  .bar-l { font-size:11px; color: var(--muted); }
+
+  /* list */
+  .chips { display:flex; gap:6px; flex-wrap:wrap; margin-bottom: 12px; }
+  .chip { font-size:12px; padding:4px 11px; border-radius:999px; border:1px solid var(--border); color: var(--muted); background: var(--panel); cursor:pointer; }
+  .chip.on { color: var(--text); border-color: var(--accent); background: var(--panel-2); }
+  .list { background: var(--panel); border:1px solid var(--border); border-radius: 14px; overflow:hidden; }
+  .row { display:flex; align-items:center; gap:12px; padding: 10px 14px; border-top:1px solid var(--border); }
+  .row:first-child { border-top:none; }
+  .row:hover { background: var(--panel-2); }
+  .row .rdate { flex:none; width: 66px; font-size:12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .row .rdate.overdue { color: var(--blocked); font-weight:600; }
+  .row .rdate.today { color: var(--accent); font-weight:600; }
+  .row .pdot { flex:none; width:9px; height:9px; border-radius:50%; }
+  .row .rtitle { flex:1; min-width:0; cursor:pointer; }
+  .row .rtitle .tt { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .row .rtitle .ts { font-size:11px; color: var(--muted); }
+  .row.is-posted .rtitle .tt { text-decoration: line-through; opacity:.6; }
+  .gpill { flex:none; font-size:10px; padding:2px 8px; border-radius:999px; color:#fff; white-space:nowrap; }
+  .rate { flex:none; width:18px; text-align:center; font-size:11px; font-weight:700; border-radius:5px; }
+  .rate.A { color: var(--on_track); } .rate.B { color: var(--accent); } .rate.C { color: var(--muted); }
+
+  .legend { display:flex; gap:14px; flex-wrap:wrap; margin: 8px 2px 0; font-size:12px; color: var(--muted); }
+  .legend .lk { display:inline-flex; align-items:center; gap:6px; }
+  .legend .pdot { width:9px; height:9px; border-radius:50%; display:inline-block; }
+
+  /* modal */
+  .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,.6); display: none; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; z-index: 50; }
+  .modal-bg.open { display: flex; }
+  .modal { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; max-width: 680px; width: 100%; box-shadow: var(--shadow); position:relative; }
+  .modal .m-head { padding: 20px 24px 14px; border-bottom: 1px solid var(--border); }
+  .modal .m-body { padding: 8px 24px 26px; }
+  .modal h2 { margin: 0 0 8px; font-size: 19px; letter-spacing:-.2px; }
+  .modal .close { position: absolute; top: 14px; right: 18px; font-size: 26px; color: var(--muted); cursor: pointer; background: none; border: none; line-height:1; }
+  .mpills { display:flex; gap:6px; flex-wrap:wrap; }
+  .pill { font-size:11px; padding:3px 9px; border-radius:999px; border:1px solid var(--border); color: var(--muted); white-space:nowrap; }
+  .pill.solid { color:#fff; border:none; }
+  .blk { margin-top: 18px; }
+  .blk h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin: 0 0 7px; display:flex; align-items:center; gap:8px; }
+  .draft { white-space: pre-wrap; background: var(--bg); border:1px solid var(--border); border-radius: 10px; padding: 14px; font-size: 13.5px; line-height:1.55; }
+  .mono { color: var(--muted); font-size:13px; }
+  .tags { color: var(--accent); font-size:13px; }
+  .field { display:flex; flex-direction:column; gap:4px; margin-bottom:10px; }
+  .field label { font-size:11px; text-transform:uppercase; letter-spacing:.5px; color: var(--muted); }
+  .field input, .field textarea { font: inherit; font-size:13px; background: var(--bg); color: var(--text); border:1px solid var(--border); border-radius:8px; padding:8px 10px; color-scheme: dark; }
+  .field textarea { resize: vertical; min-height: 46px; }
+  .two { display:flex; gap:10px; }
+  .two .field { flex:1; }
+  .copy-btn { display:inline-flex; align-items:center; gap:5px; font: inherit; font-size:12px; background: var(--panel-2); border:1px solid var(--border); color: var(--muted); border-radius:7px; padding:3px 8px; cursor:pointer; }
+  .copy-btn:hover { color: var(--text); border-color: var(--muted); }
+  .copy-btn.copied { color: var(--on_track); border-color: var(--on_track); }
+  .hint { font-size:12px; color: var(--muted); font-style: italic; }
+
+  @media (max-width: 820px) {
+    .week { grid-template-columns: 1fr; }
+    .day { min-height: 0; flex-direction: row; align-items:flex-start; gap:12px; }
+    .day .dh { flex-direction: column; min-width: 54px; margin-bottom:0; }
+    .day .body { flex:1; }
+    .day .none { margin: 4px 0; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>📣 Content Calendar</h1>
+      <div class="sub" id="sub"></div>
+    </div>
+    <div class="head-actions">
+      <span id="syncStatus" class="sync"
+        title="Whether your changes are saved to the local server (overlay-state.json). Green ● = synced to disk; amber ○ = local only (no server running), still saved in this browser."></span>
+    </div>
+  </header>
+
+  <div class="stats" id="stats"></div>
+
+  <h2 class="section">🗓️ Week</h2>
+  <div class="toolbar">
+    <button class="btn" onclick="setWeek(-1)">◀ Prev</button>
+    <button class="btn" onclick="goToday()">Today</button>
+    <button class="btn" onclick="setWeek(1)">Next ▶</button>
+    <span class="wk-label" id="wkLabel"></span>
+  </div>
+  <div class="week" id="week"></div>
+  <div class="legend" id="legend"></div>
+
+  <h2 class="section">🧭 Content Roadmap</h2>
+  <div class="roadmap" id="roadmap"></div>
+
+  <h2 class="section">📋 All Content <span class="count" id="listCount"></span></h2>
+  <div class="chips" id="statusChips"></div>
+  <div class="chips" id="goalChips"></div>
+  <div class="list" id="list"></div>
+</div>
+
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <button class="close" onclick="closeModal()">&times;</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script src="calendar-data.js"></script>
+<script>
+  const D = window.MKT_DATA || { meta:{}, phases:[], posts:[] };
+  const POSTS = D.posts || [];
+  const byId = Object.fromEntries(POSTS.map(p => [p.id, p]));
+
+  // ---- lookups ----
+  // Content pillars — the recurring themes you rotate across. Redefine these to match
+  // your own brand-voice.md pillars; unknown keys fall back to the "task" style, so the
+  // dashboard keeps rendering while you retune. Keys here must match the `pillar` values
+  // you use in calendar-data.js.
+  const PILLAR = {
+    educate:{l:"Educate",v:"--pi-educate"}, pov:{l:"Point of view",v:"--pi-pov"},
+    story:{l:"Story",v:"--pi-story"}, product:{l:"Product / offer",v:"--pi-product"},
+    proof:{l:"Proof / results",v:"--pi-proof"}, engage:{l:"Engagement",v:"--pi-engage"},
+    personal:{l:"Personal",v:"--pi-personal"}, task:{l:"Prep / outreach",v:"--pi-task"},
+  };
+  // Goals — the funnel outcome each piece serves. Rename to match your priorities in
+  // content-roadmap.md (e.g. leads/sales, list signups, brand authority).
+  const GOAL = {
+    leads:{l:"Leads / sales",v:"--p0"}, signups:{l:"Signups",v:"--accent"},
+    authority:{l:"Authority",v:"--review"}, setup:{l:"Setup",v:"--p3"},
+  };
+  const STATUS = { idea:"Idea", planned:"Planned", drafting:"Drafting", ready:"Ready", posted:"Posted" };
+  const STATUS_ORDER = ["idea","planned","drafting","ready","posted"];
+
+  const cvar = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const esc = s => (s==null?'':String(s)).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const pillarColor = k => cvar((PILLAR[k]||PILLAR.task).v);
+  const goalColor = k => cvar((GOAL[k]||GOAL.setup).v);
+
+  // ---- date helpers (urgency is computed from the real clock) ----
+  const z2 = n => String(n).padStart(2,'0');
+  const isoOf = d => d.getFullYear()+'-'+z2(d.getMonth()+1)+'-'+z2(d.getDate());
+  const todayISO = () => isoOf(new Date());
+  const parseISO = s => { const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); };
+  const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const shortDate = iso => { const d=parseISO(iso); return MON[d.getMonth()]+' '+d.getDate(); };
+  function daysBetween(aISO,bISO){ return Math.round((parseISO(bISO)-parseISO(aISO))/86400000); }
+
+  // ---- working-state overlay (localStorage; never touches calendar-data.js) ----
+  const OKEY = 'mkt.overlay.v1';
+  let OV = (()=>{ try { return JSON.parse(localStorage.getItem(OKEY))||{}; } catch(e){ return {}; } })();
+  const saveOV = () => { try { localStorage.setItem(OKEY, JSON.stringify(OV)); } catch(e){} schedulePush(); };
+  const ov = id => OV[id] || {};
+  function setOv(id, patch){ OV[id] = Object.assign({}, ov(id), patch); saveOV(); }
+  function statusOf(p){ return ov(p.id).status || p.status || (p.date ? 'planned' : 'idea'); }
+  const numv = v => { const n = parseInt(v,10); return isNaN(n)?0:n; };
+
+  // ---- server sync (persist overlay to the local server; localStorage is the fallback) ----
+  let SERVER_OK = null;           // null = unknown, true = reachable, false = absent (this session)
+  let pushTimer = null;
+  function setSync(state){
+    const el = document.getElementById('syncStatus'); if(!el) return;
+    if (state==='ok'){ el.className='sync ok'; el.textContent='synced'; }
+    else if (state==='saving'){ el.className='sync'; el.textContent='saving…'; }
+    else if (state==='local'){ el.className='sync local'; el.textContent='local only'; }
+    else { el.className='sync'; el.textContent=''; }
+  }
+  function schedulePush(){
+    if (SERVER_OK===false) return;          // no server this session; localStorage already holds it
+    if (pushTimer) clearTimeout(pushTimer);
+    pushTimer = setTimeout(pushState, 400); // coalesce rapid edits (e.g. typing a result note)
+  }
+  function pushState(){
+    setSync('saving');
+    fetch('/api/state', { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ overlay: OV }) })
+      .then(r => { if(!r.ok) throw new Error('http '+r.status); SERVER_OK=true; setSync('ok'); })
+      .catch(() => { SERVER_OK=false; setSync('local'); });
+  }
+  function hydrateFromServer(){
+    fetch('/api/state', { headers:{'Accept':'application/json'} })
+      .then(r => { if(!r.ok) throw new Error('http '+r.status); return r.json(); })
+      .then(data => {
+        SERVER_OK = true;
+        OV = (data && data.overlay && typeof data.overlay==='object') ? data.overlay : {};
+        try { localStorage.setItem(OKEY, JSON.stringify(OV)); } catch(e){}   // mirror server state; no push
+        renderAll();
+        if (openId) openModal(openId);
+        setSync('ok');
+      })
+      .catch(() => { SERVER_OK=false; setSync('local'); });
+  }
+
+  // ---- stats ----
+  function renderStats(){
+    const t = todayISO();
+    const posts = POSTS.filter(p=>p.type!=='task');
+    const wkStart = mondayOf(new Date()); const wkEnd = new Date(wkStart); wkEnd.setDate(wkEnd.getDate()+6);
+    const inThisWeek = p => p.date && parseISO(p.date)>=wkStart && parseISO(p.date)<=wkEnd;
+    const posted = POSTS.filter(p=>statusOf(p)==='posted').length;
+    const inProg = POSTS.filter(p=>['drafting','ready'].includes(statusOf(p))).length;
+    const overdue = POSTS.filter(p=>p.date && p.date<t && statusOf(p)!=='posted').length;
+    const thisWeek = posts.filter(inThisWeek).length;
+    const calls = POSTS.reduce((n,p)=>n+numv(ov(p.id).calls),0);
+    const betas = POSTS.reduce((n,p)=>n+numv(ov(p.id).betas),0);
+    const phase = (D.phases||[]).find(ph=>ph.id===D.meta.currentPhase);
+    let daysLeft = D.meta.sprintEnd ? daysBetween(t, D.meta.sprintEnd) : null;
+    if (daysLeft!=null && daysLeft<0) daysLeft = 0;
+
+    const cells = [
+      {n: phase? ('P'+phase.id) : '—', l: phase? phase.name : 'Phase'},
+      {n: daysLeft==null?'—':daysLeft, l:'Days left', c: daysLeft!=null&&daysLeft<=14?'warn':''},
+      {n: thisWeek, l:'Posts this wk', c:'accent'},
+      {n: inProg, l:'In progress', c:'accent'},
+      {n: overdue, l:'Overdue', c: overdue?'danger':''},
+      {n: posted, l:'Posted', c:'good'},
+      {n: calls, l:'Leads', c: calls?'good':''},
+      {n: betas, l:'Signups', c: betas?'good':''},
+    ];
+    document.getElementById('stats').innerHTML = cells.map(c=>
+      `<div class="stat ${c.c||''}"><div class="n">${esc(c.n)}</div><div class="l">${esc(c.l)}</div></div>`).join('');
+    document.getElementById('sub').innerHTML =
+      `${esc(D.meta.owner||'')} · ${esc(D.meta.brand||'')} · ${esc(D.meta.channel||'')} · updated ${esc(D.meta.updated||'?')}`
+      + `<br>${esc(D.meta.cadence||'')} · split ${esc(D.meta.split||'')}`;
+  }
+
+  // ---- week grid ----
+  let weekOffset = 0;
+  function mondayOf(base){ const x=new Date(base); const dow=(x.getDay()+6)%7; x.setDate(x.getDate()-dow); x.setHours(0,0,0,0); return x; }
+  function setWeek(delta){ weekOffset += delta; renderWeek(); }
+  function goToday(){ weekOffset = 0; renderWeek(); }
+
+  function miniHTML(p){
+    const st = statusOf(p);
+    const icon = p.type==='task' ? '✎ ' : '';
+    return `<div class="mini ${st==='posted'?'is-posted':''}" style="--mc:${pillarColor(p.pillar)}" onclick="openModal('${p.id}')">
+      <div class="mt">${icon}${esc(p.title)}</div>
+      <div class="mr"><span class="spill st-${st}">${STATUS[st]}</span></div>
+    </div>`;
+  }
+  function renderWeek(){
+    const ws = mondayOf(new Date()); ws.setDate(ws.getDate()+weekOffset*7);
+    const days = [];
+    for (let i=0;i<7;i++){ const d=new Date(ws); d.setDate(d.getDate()+i); days.push(d); }
+    const t = todayISO();
+    const DOW = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+    document.getElementById('week').innerHTML = days.map((d,i)=>{
+      const iso = isoOf(d);
+      const items = POSTS.filter(p=>p.date===iso).sort((a,b)=> (a.type==='task')-(b.type==='task'));
+      const body = items.length ? items.map(miniHTML).join('') : `<div class="none">—</div>`;
+      const weekend = i>=5 ? 'weekend' : '';
+      return `<div class="day ${iso===t?'today':''} ${weekend}">
+        <div class="dh"><span class="dow">${DOW[i]}</span><span class="dnum">${shortDate(iso)}</span></div>
+        <div class="body">${body}</div>
+      </div>`;
+    }).join('');
+    const a = isoOf(days[0]), b = isoOf(days[6]);
+    const rel = weekOffset===0 ? 'This week' : (weekOffset>0?`+${weekOffset} wk`:`${weekOffset} wk`);
+    document.getElementById('wkLabel').innerHTML = `${shortDate(a)} – ${shortDate(b)}, ${parseISO(b).getFullYear()} <span>· ${rel}</span>`;
+  }
+
+  function renderLegend(){
+    document.getElementById('legend').innerHTML = Object.entries(PILLAR).map(([k,v])=>
+      `<span class="lk"><span class="pdot" style="background:${cvar(v.v)}"></span>${v.l}</span>`).join('');
+  }
+
+  // ---- roadmap ----
+  function renderRoadmap(){
+    document.getElementById('roadmap').innerHTML = (D.phases||[]).map(ph=>{
+      const inPhase = POSTS.filter(p=>p.type!=='task' && p.phase===ph.id);
+      const done = inPhase.filter(p=>statusOf(p)==='posted').length;
+      const pct = inPhase.length ? Math.round(done/inPhase.length*100) : 0;
+      const cur = ph.id===D.meta.currentPhase;
+      return `<div class="phase ${cur?'current':''}">
+        ${cur?'<span class="cur-tag">CURRENT</span>':''}
+        <div class="pnum">Phase ${esc(ph.id)}</div>
+        <div class="pname">${esc(ph.name)}</div>
+        <div class="pwin">${esc(ph.window)}</div>
+        <div class="pgoal">${esc(ph.goal)}</div>
+        <div class="bar"><i style="width:${pct}%"></i></div>
+        <div class="bar-l">${done}/${inPhase.length} posted</div>
+      </div>`;
+    }).join('');
+  }
+
+  // ---- list + filters ----
+  let filt = { status:'all', goal:'all' };
+  function setFilt(kind, val){ filt[kind]=val; renderList(); }
+  function chip(kind, val, label){
+    return `<span class="chip ${filt[kind]===val?'on':''}" onclick="setFilt('${kind}','${val}')">${esc(label)}</span>`;
+  }
+  function renderChips(){
+    document.getElementById('statusChips').innerHTML =
+      chip('status','all','All') + STATUS_ORDER.map(s=>chip('status',s,STATUS[s])).join('');
+    document.getElementById('goalChips').innerHTML =
+      chip('goal','all','All goals') + Object.entries(GOAL).map(([k,v])=>chip('goal',k,v.l)).join('');
+  }
+  function statusSelect(p){
+    const st = statusOf(p);
+    return `<select class="sel st-${st}" onclick="event.stopPropagation()" onchange="setStatus('${p.id}',this.value)">
+      ${STATUS_ORDER.map(s=>`<option value="${s}" ${s===st?'selected':''}>${STATUS[s]}</option>`).join('')}
+    </select>`;
+  }
+  function renderList(){
+    const t = todayISO();
+    let items = POSTS.slice().filter(p=>{
+      if (filt.status!=='all' && statusOf(p)!==filt.status) return false;
+      if (filt.goal!=='all' && p.goal!==filt.goal) return false;
+      return true;
+    });
+    // dated ascending first, then undated backlog
+    items.sort((a,b)=>{
+      if (a.date && b.date) return a.date<b.date?-1:a.date>b.date?1:0;
+      if (a.date) return -1; if (b.date) return 1;
+      return 0;
+    });
+    document.getElementById('listCount').textContent = `${items.length} item${items.length===1?'':'s'}`;
+    if (!items.length){ document.getElementById('list').innerHTML = `<div class="row"><span class="mono">Nothing matches this filter.</span></div>`; return; }
+    document.getElementById('list').innerHTML = items.map(p=>{
+      const st = statusOf(p);
+      let dcls='', dtxt='—';
+      if (p.date){ dtxt = shortDate(p.date); if (p.date===t){dcls='today';} else if (p.date<t && st!=='posted'){dcls='overdue';} }
+      const g = GOAL[p.goal];
+      const sub = [PILLAR[p.pillar]?.l, p.product, p.format].filter(Boolean).join(' · ');
+      return `<div class="row ${st==='posted'?'is-posted':''}">
+        <span class="rdate ${dcls}">${dtxt}</span>
+        <span class="pdot" style="background:${pillarColor(p.pillar)}"></span>
+        <span class="rtitle" onclick="openModal('${p.id}')">
+          <div class="tt">${p.type==='task'?'✎ ':''}${esc(p.title)}</div>
+          <div class="ts">${esc(sub)}</div>
+        </span>
+        ${p.rating?`<span class="rate ${p.rating}">${p.rating}</span>`:'<span class="rate"></span>'}
+        ${g?`<span class="gpill" style="background:${goalColor(p.goal)}">${g.l}</span>`:''}
+        ${statusSelect(p)}
+      </div>`;
+    }).join('');
+  }
+
+  // ---- status + field updates ----
+  function setStatus(id, val){ setOv(id, {status: val}); renderAll(); if (openId===id) openModal(id); }
+  function setField(id, field, val){ setOv(id, {[field]: val}); if (['calls','betas'].includes(field)) renderStats(); }
+
+  // ---- copy ----
+  function copyDraft(id, btn){
+    const p = byId[id]; if (!p || !p.draft) return;
+    const done = () => { btn.classList.add('copied'); const o=btn.innerHTML; btn.innerHTML='✓ Copied'; setTimeout(()=>{btn.classList.remove('copied'); btn.innerHTML=o;},1300); };
+    if (navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(p.draft).then(done).catch(()=>legacy(p.draft,done)); }
+    else legacy(p.draft, done);
+  }
+  function legacy(text, done){ try{ const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.top='-1000px'; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); done(); }catch(e){} }
+
+  // ---- modal ----
+  let openId = null;
+  function openModal(id){
+    const p = byId[id]; if (!p) return;
+    openId = id;
+    const st = statusOf(p); const o = ov(id);
+    const pills = [];
+    if (PILLAR[p.pillar]) pills.push(`<span class="pill solid" style="background:${pillarColor(p.pillar)}">${PILLAR[p.pillar].l}</span>`);
+    if (GOAL[p.goal]) pills.push(`<span class="pill solid" style="background:${goalColor(p.goal)}">${GOAL[p.goal].l}</span>`);
+    if (p.product) pills.push(`<span class="pill">${esc(p.product)}</span>`);
+    if (p.rating) pills.push(`<span class="pill">Rating ${esc(p.rating)}</span>`);
+    if (p.phase) pills.push(`<span class="pill">Phase ${esc(p.phase)}</span>`);
+    if (p.format) pills.push(`<span class="pill">${esc(p.format)}</span>`);
+
+    let html = `<div class="m-head">
+      <h2>${p.type==='task'?'✎ ':''}${esc(p.title)}</h2>
+      <div class="mpills">${pills.join('')}</div>
+    </div><div class="m-body">`;
+
+    html += `<div class="blk"><h4>Schedule &amp; status</h4>
+      <div class="two">
+        <div class="field"><label>Scheduled</label><input value="${esc(p.date||'')}" placeholder="unscheduled (backlog)" readonly></div>
+        <div class="field"><label>Status</label>${statusSelect(p)}</div>
+      </div></div>`;
+
+    if (p.hook) html += `<div class="blk"><h4>Hook</h4><div class="mono">${esc(p.hook)}</div></div>`;
+
+    if (p.draft){
+      html += `<div class="blk"><h4>Draft <button class="copy-btn" onclick="copyDraft('${id}',this)">⧉ Copy</button></h4>
+        <div class="draft">${esc(p.draft)}</div></div>`;
+    } else {
+      html += `<div class="blk"><h4>Draft</h4><div class="hint">Not written yet — ask your agent: “write the ${esc(p.title)} post”.</div></div>`;
+    }
+    if (p.cta) html += `<div class="blk"><h4>CTA</h4><div class="mono">${esc(p.cta)}</div></div>`;
+    if (p.hashtags && p.hashtags.length) html += `<div class="blk"><h4>Hashtags</h4><div class="tags">${esc(p.hashtags.join('  '))}</div></div>`;
+    if (p.firstComment) html += `<div class="blk"><h4>First comment (links go here)</h4><div class="mono">${esc(p.firstComment)}</div></div>`;
+    if (p.note) html += `<div class="blk"><h4>Note</h4><div class="mono">${esc(p.note)}</div></div>`;
+
+    // results (stored locally)
+    html += `<div class="blk"><h4>Results <span class="hint" style="text-transform:none;letter-spacing:0">saved in this browser</span></h4>
+      <div class="field"><label>Posted link</label>
+        <input value="${esc(o.link||'')}" placeholder="https://… (link to the published post)" oninput="setField('${id}','link',this.value)"></div>
+      <div class="two">
+        <div class="field"><label>Leads</label><input type="number" min="0" value="${o.calls!=null?esc(o.calls):''}" oninput="setField('${id}','calls',this.value)"></div>
+        <div class="field"><label>Signups</label><input type="number" min="0" value="${o.betas!=null?esc(o.betas):''}" oninput="setField('${id}','betas',this.value)"></div>
+      </div>
+      <div class="field"><label>Result note (impressions, comments, what landed)</label>
+        <textarea oninput="setField('${id}','result',this.value)" placeholder="e.g. 4.2k impressions, 3 DMs, 1 call booked…">${esc(o.result||'')}</textarea></div>
+      <div class="hint">Tip: also tell your agent “log this” with the link so it records the post in content-log.md.</div>
+    </div>`;
+
+    html += `</div>`;
+    document.getElementById('modalContent').innerHTML = html;
+    document.getElementById('modalBg').classList.add('open');
+  }
+  function closeModal(){ openId=null; document.getElementById('modalBg').classList.remove('open'); renderAll(); }
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+
+  // ---- render all ----
+  function renderAll(){ renderStats(); renderWeek(); renderRoadmap(); renderChips(); renderList(); }
+  renderLegend();
+  renderAll();                // instant paint from localStorage cache
+  hydrateFromServer();        // then reconcile with the server (source of truth) if it's running
+</script>
+</body>
+</html>
