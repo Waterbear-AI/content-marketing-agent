@@ -22,6 +22,8 @@ only you can do — the real opinion, the final edit, and hitting publish.
 
 Using it is a loop between you, your agent, and the dashboard.
 
+![Diagram of the two-step loop. Step 1, tell your agent: say what you want — "draft a post about X," "give me content ideas," or "what should I post this week?" — and it drafts in your voice and files everything into the calendar. Step 2, review and shape the calendar: open the dashboard in your browser to see your week, your roadmap, and your idea pipeline, read and copy a draft, and — once you publish — mark it posted and log the link, leads, and signups. A repeat symbol in the middle shows that you keep running the loop as you keep posting.](docs/how-you-use-it.svg)
+
 **1. Tell your agent what you're doing.** Open a session with your agent (Claude, Codex, whatever
 you use) and talk to it like a person. "Draft a post about X." "Give me content ideas." "What
 should I post this week?" It reads your brand voice and your log, drafts in your voice, and files

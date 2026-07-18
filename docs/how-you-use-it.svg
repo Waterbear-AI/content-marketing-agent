@@ -1,0 +1,87 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="cmTitle cmDesc">
+  <title id="cmTitle">How you use the Content Marketing Agent: a loop</title>
+  <desc id="cmDesc">Using the tool is a repeating loop of two steps. Step 1: tell your coding agent — Claude or Codex, in the CLI or desktop app — what you're doing (draft a post about X, ask for content ideas, or ask what to post this week), and it drafts in your voice and files everything into the calendar. Step 2: review the dashboard in your browser — the week, the roadmap, and the idea pipeline — read and copy a draft, mark a post published, and log its link, leads, and signups. Then you repeat the loop as you keep posting.</desc>
+
+  <defs>
+    <style>
+      .bg      { fill: #ffffff; }
+      .card    { fill: #f6f8fa; stroke: #d0d7de; stroke-width: 1.5; }
+      .card2   { fill: #eef7f0; stroke: #1a7f37; stroke-width: 2; }
+      .text    { fill: #1f2328; }
+      .muted   { fill: #57606a; }
+      .arrowln { stroke: #57606a; fill: none; }
+      .arrowfl { fill: #57606a; }
+      .ic-you  { fill: #8250df; }
+      .ic-dash { fill: #1a7f37; }
+      .rep     { fill: #2f6fdb; }
+      .stepp   { fill: #57606a; }
+      @media (prefers-color-scheme: dark) {
+        .bg      { fill: #0e1116; }
+        .card    { fill: #161b22; stroke: #2a323d; }
+        .card2   { fill: #14261a; stroke: #3fb950; stroke-width: 2; }
+        .text    { fill: #e6edf3; }
+        .muted   { fill: #8b949e; }
+        .arrowln { stroke: #8b949e; fill: none; }
+        .arrowfl { fill: #8b949e; }
+        .ic-you  { fill: #a371f7; }
+        .ic-dash { fill: #3fb950; }
+        .rep     { fill: #4493f8; }
+        .stepp   { fill: #8b949e; }
+      }
+      text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+      .htitle { font-size: 15px; font-weight: 700; letter-spacing: .3px; text-anchor: middle; }
+      .step   { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-anchor: middle; }
+      .boxt   { font-size: 15px; font-weight: 700; text-anchor: middle; }
+      .cap    { font-size: 11.5px; text-anchor: middle; }
+      .albl   { font-size: 11px; font-weight: 600; text-anchor: middle; }
+      .sub    { font-size: 10.5px; font-weight: 600; letter-spacing: .2px; text-anchor: middle; }
+      .replbl { font-size: 11px; font-weight: 700; letter-spacing: .5px; text-anchor: middle; }
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" class="arrowfl"/>
+    </marker>
+  </defs>
+
+  <rect x="1" y="1" width="898" height="498" rx="14" class="bg" stroke-width="0"/>
+
+  <text x="450" y="40" class="htitle text">How you use it: a two-step loop you keep running</text>
+
+  <!-- ===== Step 1 card (left) ===== -->
+  <rect x="50" y="120" width="300" height="235" rx="14" class="card"/>
+  <text x="200" y="156" class="step stepp">STEP 1</text>
+  <circle cx="200" cy="196" r="23" class="ic-you"/>
+  <text x="200" y="203" font-size="21" text-anchor="middle">💬</text>
+  <text x="200" y="240" class="boxt text">Tell your agent</text>
+  <text x="200" y="258" class="sub ic-you">Claude or Codex &#8212; CLI or desktop app</text>
+  <text x="200" y="278" class="cap muted">Say what you want: &#8220;draft a post</text>
+  <text x="200" y="294" class="cap muted">about X,&#8221; &#8220;give me ideas,&#8221; &#8220;what</text>
+  <text x="200" y="310" class="cap muted">should I post this week?&#8221; It drafts</text>
+  <text x="200" y="326" class="cap muted">in your voice, into the calendar.</text>
+
+  <!-- ===== Step 2 card (right) ===== -->
+  <rect x="550" y="120" width="300" height="235" rx="14" class="card2"/>
+  <text x="700" y="156" class="step stepp">STEP 2</text>
+  <circle cx="700" cy="196" r="23" class="ic-dash"/>
+  <text x="700" y="203" font-size="21" text-anchor="middle">📊</text>
+  <text x="700" y="245" class="boxt text">Review &amp; shape the calendar</text>
+  <text x="700" y="278" class="cap muted">See your week, roadmap, and idea</text>
+  <text x="700" y="294" class="cap muted">pipeline. Read a draft, copy it, and</text>
+  <text x="700" y="310" class="cap muted">&#8212; once you publish &#8212; mark it posted</text>
+  <text x="700" y="326" class="cap muted">and log the link, leads &amp; signups.</text>
+
+  <!-- ===== top arrow: step 1 -> step 2 ===== -->
+  <path d="M 350 185 Q 450 122 550 185" class="arrowln" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="450" y="110" class="albl muted">it drafts and fills your calendar</text>
+
+  <!-- ===== bottom arrow: step 2 -> step 1 ===== -->
+  <path d="M 550 300 Q 450 372 350 300" class="arrowln" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="450" y="398" class="albl muted">posted something? tell it again</text>
+
+  <!-- ===== center repeat badge ===== -->
+  <circle cx="450" cy="240" r="30" class="rep"/>
+  <text x="450" y="252" font-size="30" text-anchor="middle" fill="#ffffff">&#8635;</text>
+
+  <!-- ===== bottom caption ===== -->
+  <text x="450" y="452" class="replbl text">Repeat as you post. You have a conversation; the calendar stays current.</text>
+  <text x="450" y="472" class="cap muted">You never keep a content board tidy by hand.</text>
+</svg>
