@@ -78,6 +78,8 @@ comma or a bad value before it silently breaks the dashboard.
 | `tools/migrate.js` | Upgrades your data to the current schema version (`npm run migrate`) |
 | `tools/migrations.js` | The ordered data-migration steps `migrate.js` runs |
 | `tools/schema.js` | The data schema version the current code expects (`SCHEMA_VERSION`) |
+| `tools/update.js` | Manual "update the agent" flow: pulls a newer version, preserves your data (`npm run update`) |
+| `update-manifest.json` | The code-file allowlist `update.js` is allowed to overwrite; everything else is preserved |
 | `tools/package.sh` | Builds a clean, git-free `content-marketing-agent.zip` (`npm run package`) |
 | `tools/sync-version.js` | Stamps `package.json`'s version into the README (`npm run version:sync`) |
 | `.claude/settings.json` | Claude Code SessionStart hook that injects today's date |
@@ -103,11 +105,16 @@ without touching what you've written. Two independent version numbers make that 
   `tools/schema.js`) bumps only when the *shape* of the data changes — it drives "should I migrate my
   data?" Most releases don't touch it.
 
-`tools/migrate.js` reads your data's `schemaVersion` and applies any pending steps from
-`tools/migrations.js` to bring it up to what the code expects, **snapshotting your data into
-`.backups/` first**. It's a no-op when you're already current, and `validate-data.js` will tell you
-when a migration is due. (An agent-driven "update the tool" command that pulls a new version,
-preserves your data files, and runs this migration for you is the planned next step.)
+Ask your agent to "update the agent," or run `npm run update` (`node tools/update.js`) yourself. It
+fetches a newer version (the GitHub `main` zip by default, or `--source <dir|zip|url>`), backs up
+your **entire install** to `.backups/<timestamp>/`, then overwrites only the files listed in
+`update-manifest.json`'s `code` array — everything else (`calendar-data.js`, `overlay-state.json`,
+`MEMORY.md`, `journal.md`, the reference files, `.claude/settings.json`, `.compounds/`, `.backups/`)
+is preserved by default, whether or not the manifest even mentions it. It then runs
+`tools/migrate.js` (which reads your data's `schemaVersion`, applies any pending steps from
+`tools/migrations.js`, and snapshots your data into `.backups/` again first) and
+`tools/validate-data.js`, and restarts the server if it was running. `--dry-run` reports the full
+plan — files that would change, the version comparison — without writing anything.
 
 ## Privacy details
 

@@ -114,6 +114,14 @@ straight to normal operation.
   the ordered upgrade steps. Run `node tools/migrate.js` (it backs up to `.backups/` first) when the
   validator says the schema is behind — e.g. after pulling a newer version of the tool. No-op when
   already current.
+- **`tools/update.js`** — the manual "update the agent" flow: fetches a newer version of the tool
+  (a GitHub zip by default, or `--source <dir|zip|url>`), backs up the whole install to `.backups/`,
+  overwrites only the code files listed in `update-manifest.json` (default-preserve — `calendar-data.js`,
+  `overlay-state.json`, `MEMORY.md`, `journal.md`, the reference files (`brand-voice.md`, `offerings.md`,
+  `content-roadmap.md`, `content-pipeline.md`, `content-log.md`, `content-playbook.md`), and
+  `.claude/settings.json` are never touched), then runs `tools/migrate.js` and `tools/validate-data.js`
+  and restarts the server if it was running. Manual only — nothing checks for updates on its own; run
+  `node tools/update.js --dry-run` first to see the plan.
 
 ## Keep the dashboard current
 `calendar-data.js` is the file you maintain — whenever you plan, schedule, draft, or re-prioritize
@@ -157,6 +165,17 @@ done — don't assume it does; read `overlay-state.json` to see current status.
 **"strategy" / "how's it going"**
 - Read `content-log.md`; summarize what's shipped, what's converting, gaps in pillar coverage, and
   recommend next moves.
+
+**"update the agent" / "check for updates" / "upgrade this tool"**
+- This is a MANUAL, explicit ask — never run it on your own or check for updates unprompted.
+- Run `npm run update` (or `node tools/update.js`); add `--dry-run` first if the user wants to see
+  the plan before committing to it. It fetches a newer version of the tool, backs up the whole
+  install to `.backups/`, overwrites only code files (never `calendar-data.js`, `overlay-state.json`,
+  `MEMORY.md`, `journal.md`, `brand-voice.md`, `offerings.md`, `content-roadmap.md`,
+  `content-pipeline.md`, `content-log.md`, `content-playbook.md`, or `.claude/settings.json`), then
+  runs `tools/migrate.js` and `tools/validate-data.js` and restarts the server if it was running.
+  Report the summary it prints (old→new version, files updated, migration/validation result) back
+  to the user.
 
 ### Rating system (for content ideas)
 - **A** — On-strategy and high-conversion. Directly tied to a ranked goal, strong hook, authentic

@@ -21,3 +21,12 @@ content-marketing-agent.zip
 
 # Data snapshots written by tools/migrate.js before it upgrades your data
 .backups/
+
+# Agent / tooling local state — never commit this to the public template.
+# .compounds/ is coding-agent workflow cache; under .claude/ we keep only the two
+# shipped template files tracked (the date hook + dev-server launch config) and
+# ignore everything else an agent might drop there (e.g. installed hooks).
+.compounds/
+.claude/*
+!.claude/launch.json
+!.claude/settings.json

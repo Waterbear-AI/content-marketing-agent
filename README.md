@@ -88,6 +88,19 @@ actually *do* (leads, audience growth, authority), how you sound, and where and 
 Answer however you'd say it out loud; a sentence each is plenty. It fills in your brand voice, your
 offerings, and your roadmap, and you're into the loop above.
 
+## Updating
+
+Getting a newer version of this tool is a manual ask — it never checks for updates or upgrades
+itself on its own. When you want the latest version, tell your agent to "update the agent," or run
+`npm run update` yourself.
+
+Either way, your data (`calendar-data.js`, `overlay-state.json`, `MEMORY.md`, `journal.md`, and the
+brand/content reference files) is preserved — the update only replaces the tool's own code files,
+and it backs up your entire install to `.backups/` before touching anything, so there's always a
+way back. If the data format has changed since your version, migration runs automatically as part
+of the update, so your plan comes out the other side in the shape the new code expects. Want to see
+the plan first? Run `node tools/update.js --dry-run`.
+
 ## A note on privacy
 
 This project lives on GitHub as a public template, free for anyone to copy. You download it as a

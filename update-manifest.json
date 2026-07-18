@@ -1,0 +1,27 @@
+{
+  "_comment": "Code allowlist for tools/update.js. On upgrade, ONLY the paths/globs listed in `code` are overwritten with the new version's files. Anything NOT listed here is PRESERVED (default-preserve) — most importantly calendar-data.js, overlay-state.json, MEMORY.md, journal.md, brand-voice.md, offerings.md, content-roadmap.md, content-pipeline.md, content-log.md, content-playbook.md, .claude/settings.json, .compounds/, and .backups/. This keeps upgrades data-safe even if this manifest itself falls out of date.",
+  "schemaVersion": 1,
+  "code": [
+    "server.js",
+    "content-calendar.html",
+    "start.sh",
+    "stop.sh",
+    "package.json",
+    "tools/schema.js",
+    "tools/migrations.js",
+    "tools/migrate.js",
+    "tools/update.js",
+    "tools/validate-data.js",
+    "tools/sync-version.js",
+    "tools/package.sh",
+    "README.md",
+    "CLAUDE.md",
+    "AGENTS.md",
+    "HOW_IT_WORKS.md",
+    "LICENSE",
+    ".claude/launch.json",
+    "docs/*",
+    ".gitignore",
+    "update-manifest.json"
+  ]
+}
